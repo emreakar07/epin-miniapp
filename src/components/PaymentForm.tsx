@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTonConnectUI } from '@tonconnect/ui-react';
 import { Validation } from '@utils/validation';
 import { checkPhishing } from '@utils/security';
@@ -6,6 +6,9 @@ import WebApp from '@twa-dev/sdk';
 
 const PaymentForm = () => {
   const [tonConnectUI] = useTonConnectUI();
+  const [amount, setAmount] = useState<string>('0');
+  const [orderId, setOrderId] = useState<string>('');
+  const [userId, setUserId] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [paymentDetails, setPaymentDetails] = useState<{
@@ -17,6 +20,19 @@ const PaymentForm = () => {
     amount: '',
     comment: ''
   });
+
+  useEffect(() => {
+    // URL'den parametreleri al
+    const params = new URLSearchParams(window.location.search);
+    const urlAmount = params.get('amount');
+    const urlOrderId = params.get('orderId');
+    const urlUserId = params.get('userId');
+
+    // Parametreleri state'e kaydet
+    if (urlAmount) setAmount(urlAmount);
+    if (urlOrderId) setOrderId(urlOrderId);
+    if (urlUserId) setUserId(urlUserId);
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -129,8 +145,14 @@ const PaymentForm = () => {
       <div className="payment-details">
         <div className="detail-row">
           <span>Miktar:</span>
-          <span>{Number(paymentDetails.amount) / 1e9} TON</span>
+          <span>{Number(amount) / 1e9} TON</span>
         </div>
+        {orderId && (
+          <div className="detail-row">
+            <span>Sipariş No:</span>
+            <span>{orderId}</span>
+          </div>
+        )}
         {paymentDetails.comment && (
           <div className="detail-row">
             <span>Açıklama:</span>
