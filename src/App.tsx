@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
-import { TonConnectUIProvider } from '@tonconnect/ui-react';
+import { TonConnectUIProvider, THEME } from '@tonconnect/ui-react';
 import WalletConnector from '@components/WalletConnector';
 import PaymentForm from '@components/PaymentForm';
+import WebApp from '@twa-dev/sdk';
 import './styles/App.css';
 
 const manifestUrl = 'https://epin-miniapp.vercel.app/tonconnect-manifest.json' as `${string}://${string}`;
@@ -22,7 +23,11 @@ const App = () => {
       restoreConnection
       actionsConfiguration={{
         twaReturnUrl: returnUrl,
-        skipRedirectToWallet: "always"
+        skipRedirectToWallet: "always",
+        returnStrategy: "back"
+      }}
+      uiPreferences={{
+        theme: WebApp.colorScheme === 'dark' ? THEME.DARK : THEME.LIGHT
       }}
     >
       <div className="app-container">

@@ -31,8 +31,8 @@
   },
   "scripts": {
     "start": "craco start",
-    "start:https": "local-ssl-proxy --source 3001 --target 3000 & HTTPS=true craco start",
-    "build": "CI=false craco build",
+    "start:https": "HTTPS=true SSL_CRT_FILE=cert.pem SSL_KEY_FILE=key.pem craco start",
+    "build": "GENERATE_SOURCEMAP=false craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },

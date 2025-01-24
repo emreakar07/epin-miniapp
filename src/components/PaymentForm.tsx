@@ -4,6 +4,13 @@ import { Validation } from '@utils/validation';
 import { checkPhishing } from '@utils/security';
 import WebApp from '@twa-dev/sdk';
 
+interface WalletAccount {
+  address: string;
+  chain: string;
+  ton: string;
+  // diğer özellikler...
+}
+
 const PaymentForm = () => {
   const [tonConnectUI] = useTonConnectUI();
   const [amount, setAmount] = useState<string>('0');
@@ -108,17 +115,19 @@ const PaymentForm = () => {
         return;
       }
 
-      const result = await tonConnectUI.sendTransaction({
-        validUntil: Date.now() + 300000,
+      const transaction = {
+        validUntil: Math.floor(Date.now() / 1000) + 300,
         messages: [
           {
-            address: address,
-            amount: amount,
+            address: address.toString(),
+            amount: amount.toString(),
             stateInit: undefined,
-            payload: `order_${orderId}_user_${userId}`
+            payload: Buffer.from(`order_${orderId}_user_${userId}`).toString('base64')
           }
         ]
-      });
+      };
+
+      const result = await tonConnectUI.sendTransaction(transaction);
 
       console.log('İşlem başarılı:', result);
       alert('Ödeme başarıyla tamamlandı!');
@@ -127,9 +136,19 @@ const PaymentForm = () => {
         WebApp.close();
       }
 
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('İşlem hatası:', error);
-      alert('İşlem sırasında bir hata oluştu. Lütfen tekrar deneyin.');
+      if (error instanceof Error) {
+        if (error.message.includes('insufficient funds')) {
+          alert('Yetersiz bakiye');
+        } else if (error.message.includes('user rejected')) {
+          alert('İşlem kullanıcı tarafından iptal edildi');
+        } else {
+          alert('İşlem sırasında bir hata oluştu: ' + error.message);
+        }
+      } else {
+        alert('Beklenmeyen bir hata oluştu');
+      }
     } finally {
       setIsLoading(false);
     }
