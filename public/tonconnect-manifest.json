@@ -5,6 +5,6 @@
     "termsOfUseUrl": "https://epin-miniapp.vercel.app/terms.html",
     "privacyPolicyUrl": "https://epin-miniapp.vercel.app/privacy.html",
     "version": "0.1.0",
-    "permissions": ["ton_addr"],
+    "permissions": ["ton_addr", "ton_payments"],
     "platforms": ["web", "ios", "android"]
   }
