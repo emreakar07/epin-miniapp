@@ -61,7 +61,6 @@ const PaymentForm = () => {
   }, [tonConnectUI]);
 
   useEffect(() => {
-    // localStorage'dan payment verilerini al
     const paymentData = localStorage.getItem('paymentData');
     if (paymentData) {
       try {
@@ -78,18 +77,17 @@ const PaymentForm = () => {
             comment
           });
 
-          // Otomatik olarak ödeme işlemini başlat
-          handlePayment(address, amount, comment);
+          // Otomatik ödeme başlatma
+          handlePayment();  // Argümanları kaldırdık
         }
       } catch (error) {
         console.log('URI parse hatası:', error);
       }
-      // Verileri temizle
       localStorage.removeItem('paymentData');
     }
   }, []);
 
-  const handlePayment = async (address: string, amount: string, comment: string) => {
+  const handlePayment = async (address: string = 'EQBvW8Z5huBkMJYdnfAEM5JqTNkuWX3diqYENkWsIL0XggGG') => {
     if (!isConnected) {
       alert('Lütfen önce cüzdanınızı bağlayın');
       return;
@@ -97,7 +95,7 @@ const PaymentForm = () => {
 
     setIsLoading(true);
     try {
-      console.log('Ödeme başlatılıyor...', { address, amount, comment });
+      console.log('Ödeme başlatılıyor...', { address, amount, orderId });
 
       const addressValidation = Validation.validateAddress(address);
       if (!addressValidation.isValid) {
@@ -110,7 +108,6 @@ const PaymentForm = () => {
         return;
       }
 
-      console.log('Transaction gönderiliyor...');
       const result = await tonConnectUI.sendTransaction({
         validUntil: Date.now() + 300000,
         messages: [
@@ -118,7 +115,7 @@ const PaymentForm = () => {
             address: address,
             amount: amount,
             stateInit: undefined,
-            payload: comment
+            payload: `order_${orderId}_user_${userId}`
           }
         ]
       });
@@ -162,13 +159,9 @@ const PaymentForm = () => {
       </div>
 
       <button 
-        onClick={() => handlePayment(
-          paymentDetails.address,
-          paymentDetails.amount,
-          paymentDetails.comment
-        )} 
+        onClick={() => handlePayment()} 
         className="send-button"
-        disabled={isLoading || !isConnected || !paymentDetails.address}
+        disabled={isLoading || !isConnected || !amount || amount === '0'}
       >
         {isLoading ? 'İşleniyor...' : 
          !isConnected ? 'Lütfen Cüzdanı Bağlayın' : 
