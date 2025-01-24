@@ -3,6 +3,7 @@ import { useTonConnectUI } from '@tonconnect/ui-react';
 import { Validation } from '@utils/validation';
 import { checkPhishing } from '@utils/security';
 import WebApp from '@twa-dev/sdk';
+import { handleTransactionError } from '@/utils/errors';
 
 interface WalletAccount {
   address: string;
@@ -95,60 +96,40 @@ const PaymentForm = () => {
   }, []);
 
   const handlePayment = async (address: string = 'EQBvW8Z5huBkMJYdnfAEM5JqTNkuWX3diqYENkWsIL0XggGG') => {
-    if (!isConnected) {
-      alert('Lütfen önce cüzdanınızı bağlayın');
-      return;
-    }
-
     setIsLoading(true);
     try {
-      console.log('Ödeme başlatılıyor...', { address, amount, orderId });
-
-      const addressValidation = Validation.validateAddress(address);
-      if (!addressValidation.isValid) {
-        alert('Geçersiz adres');
-        return;
+      if (!tonConnectUI.connected) {
+        throw new Error('Wallet not connected');
       }
 
-      if (await checkPhishing(address)) {
-        alert('Şüpheli adres tespit edildi');
-        return;
-      }
-
-      const transaction = {
+      const tx = {
         validUntil: Math.floor(Date.now() / 1000) + 300,
-        messages: [
-          {
-            address: address.toString(),
-            amount: amount.toString(),
-            stateInit: undefined,
-            payload: Buffer.from(`order_${orderId}_user_${userId}`).toString('base64')
-          }
-        ]
+        messages: [{
+          address: address,
+          amount: amount,
+          stateInit: undefined,
+          payload: Buffer.from(JSON.stringify({
+            orderId: orderId,
+            userId: userId,
+            timestamp: Date.now()
+          })).toString('base64')
+        }]
       };
 
-      const result = await tonConnectUI.sendTransaction(transaction);
-
-      console.log('İşlem başarılı:', result);
-      alert('Ödeme başarıyla tamamlandı!');
+      const result = await tonConnectUI.sendTransaction(tx);
+      console.log('Transaction result:', result);
       
+      alert('Ödeme başarıyla tamamlandı!');
       if (WebApp.platform) {
         WebApp.close();
       }
 
-    } catch (error: unknown) {
-      console.error('İşlem hatası:', error);
-      if (error instanceof Error) {
-        if (error.message.includes('insufficient funds')) {
-          alert('Yetersiz bakiye');
-        } else if (error.message.includes('user rejected')) {
-          alert('İşlem kullanıcı tarafından iptal edildi');
-        } else {
-          alert('İşlem sırasında bir hata oluştu: ' + error.message);
-        }
-      } else {
-        alert('Beklenmeyen bir hata oluştu');
-      }
+      return result;
+    } catch (error) {
+      console.error('Payment error:', error);
+      const errorMessage = handleTransactionError(error);
+      alert(errorMessage);
+      throw error;
     } finally {
       setIsLoading(false);
     }

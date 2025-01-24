@@ -4,5 +4,7 @@
     "iconUrl": "https://epin-miniapp.vercel.app/ton-logo.png",
     "termsOfUseUrl": "https://epin-miniapp.vercel.app/terms.html",
     "privacyPolicyUrl": "https://epin-miniapp.vercel.app/privacy.html",
-    "version": "0.1.0"
+    "version": "0.1.0",
+    "permissions": ["ton_addr"],
+    "platforms": ["web", "ios", "android"]
   }
