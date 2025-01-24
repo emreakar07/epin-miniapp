@@ -1,0 +1,71 @@
+/* src/styles/theme.css */
+
+:root {
+    /* Temel renk paleti */
+    --primary-color: #2481cc;
+    --secondary-color: #1a1a1a;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    
+    /* Telegram Tema Entegrasyonu */
+    --tg-bg-color: var(--tg-theme-bg-color, #ffffff);
+    --tg-text-color: var(--tg-theme-text-color, #000000);
+    --tg-hint-color: var(--tg-theme-hint-color, #7f8b99);
+    --tg-link-color: var(--tg-theme-link-color, #2481cc);
+    --tg-button-color: var(--tg-theme-button-color, #2481cc);
+    --tg-button-text-color: var(--tg-theme-button-text-color, #ffffff);
+    --tg-secondary-bg-color: var(--tg-theme-secondary-bg-color, #f5f5f5);
+  }
+  
+  /* Karanlık Tema Override'ları */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --tg-bg-color: var(--tg-theme-bg-color, #1a1a1a);
+      --tg-text-color: var(--tg-theme-text-color, #ffffff);
+      --tg-hint-color: var(--tg-theme-hint-color, #7f8b99);
+      --tg-secondary-bg-color: var(--tg-theme-secondary-bg-color, #2d2d2d);
+    }
+  }
+  
+  /* Bileşen Temaları */
+  .tg-theme-aware {
+    background-color: var(--tg-bg-color);
+    color: var(--tg-text-color);
+    transition: all 0.3s ease;
+  }
+  
+  .tg-button {
+    background: var(--tg-button-color);
+    color: var(--tg-button-text-color);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .tg-button:hover {
+    opacity: 0.9;
+  }
+  
+  .tg-card {
+    background: var(--tg-secondary-bg-color);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  /* Özel Tema Sınıfları */
+  .dark-mode-override {
+    --tg-bg-color: #0d0d0d !important;
+    --tg-text-color: #e6e6e6 !important;
+    --tg-secondary-bg-color: #1a1a1a !important;
+  }
+  
+  .high-contrast-mode {
+    --tg-text-color: #000000;
+    --tg-bg-color: #ffffff;
+    --tg-button-color: #000000;
+    --tg-button-text-color: #ffffff;
+  }

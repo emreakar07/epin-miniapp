@@ -1,0 +1,150 @@
+.payment-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px;
+  background: var(--tg-theme-bg-color, #ffffff);
+  color: var(--tg-theme-text-color, #000000);
+}
+
+.payment-container h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--tg-theme-text-color);
+  text-align: center;
+}
+
+.input-group {
+  margin-bottom: 1rem;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--tg-theme-hint-color);
+  font-size: 0.9rem;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1.5px solid var(--tg-theme-button-color, #3390ec);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--tg-theme-bg-color);
+  color: var(--tg-theme-text-color);
+  transition: border-color 0.2s ease;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--tg-theme-button-color);
+  box-shadow: 0 0 0 2px rgba(51, 144, 236, 0.1);
+}
+
+/* Klavye navigasyonu için focus stilleri */
+.input-group input:focus-visible {
+  outline: 2px solid var(--tg-theme-button-color);
+  outline-offset: 2px;
+}
+
+.qr-section {
+  margin: 1.5rem 0;
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  background: var(--tg-theme-bg-color);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.send-button {
+  width: 100%;
+  padding: 12px;
+  background: var(--tg-theme-button-color, #3390ec);
+  color: var(--tg-theme-button-text-color, #ffffff);
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.send-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.send-button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+/* Yüksek kontrast tema desteği */
+@media (forced-colors: active) {
+  .send-button {
+    border: 2px solid ButtonText;
+  }
+}
+
+/* Responsive Tasarım */
+@media (max-width: 768px) {
+  .payment-container {
+    padding: 12px;
+  }
+
+  .payment-container h2 {
+    font-size: 1.25rem;
+  }
+
+  .qr-section {
+    padding: 0.5rem;
+  }
+
+  .qr-section canvas {
+    width: 250px !important;
+    height: 250px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .input-group input {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .qr-section canvas {
+    width: 200px !important;
+    height: 200px !important;
+  }
+}
+
+.payment-details {
+  background: var(--tg-theme-secondary-bg-color);
+  border-radius: 12px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--tg-theme-hint-color);
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-row span:first-child {
+  color: var(--tg-theme-hint-color);
+  font-size: 0.9rem;
+}
+
+.detail-row span:last-child {
+  font-weight: 500;
+  color: var(--tg-theme-text-color);
+}
