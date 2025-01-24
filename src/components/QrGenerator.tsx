@@ -2,9 +2,7 @@ import React from 'react';
 import QRCode from 'qrcode.react';
 import { toNano } from '@ton/core';
 import './styles/QrGenerator.css';
-
-// Değişiklik 1: useTonConnectUI importunu kaldır
-import WebApp from '@twa-dev/sdk'; // Yeni ekleme
+import WebApp from '@twa-dev/sdk';
 
 interface QrGeneratorProps {
   recipientAddress: string;

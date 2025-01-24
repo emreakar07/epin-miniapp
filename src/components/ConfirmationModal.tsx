@@ -1,4 +1,5 @@
 import React from 'react';
+import WebApp from '@twa-dev/sdk';
 
 interface ModalProps {
   amount: string;

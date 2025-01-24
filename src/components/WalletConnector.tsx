@@ -1,5 +1,6 @@
 import React from 'react';
 import { TonConnectButton } from '@tonconnect/ui-react';
+import WebApp from '@twa-dev/sdk';
 
 const WalletConnector = () => {
   return (

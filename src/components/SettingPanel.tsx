@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTheme } from '@context/ThemeContext';
+import WebApp from '@twa-dev/sdk';
 
 const SettingsPanel = () => {
   const { darkMode, toggleTheme } = useTheme();
