@@ -1,3 +1,3 @@
 /// <reference types="react-scripts" />
-
-declare module 'react-scripts';
+declare module 'stream-browserify';
+declare module 'buffer/';

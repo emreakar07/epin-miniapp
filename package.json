@@ -7,14 +7,15 @@
     "@ton/crypto": "^3.2.0",
     "@ton/ton": "^13.9.0",
     "@tonconnect/ui-react": "^2.0.11",
-    "@tonconnect/sdk": "^2.1.3",
     "@twa-dev/sdk": "^6.9.2",
     "buffer": "^6.0.3",
     "qrcode.react": "3.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-scripts": "5.0.1",
-    "typescript": "4.9.5"
+    "typescript": "4.9.5",
+    "stream-browserify": "^3.0.0",
+    "process": "^0.11.10"
   },
   "devDependencies": {
     "@craco/craco": "7.1.0",
@@ -32,32 +33,22 @@
   },
   "scripts": {
     "start": "craco start",
-    "start:https": "HTTPS=true SSL_CRT_FILE=cert.pem SSL_KEY_FILE=key.pem craco start",
     "build": "GENERATE_SOURCEMAP=false craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": ["react-app", "react-app/jest"]
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "production": [">0.2%", "not dead", "not op_mini all"],
+    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
+  },
+  "engines": {
+    "node": "18.x",
+    "npm": "9.x"
   },
   "resolutions": {
-    "ajv": "^8.12.0",
-    "typescript": "4.9.5"
-  },
-  "homepage": "https://epin-miniapp.vercel.app"
+    "ajv": "^8.12.0"
+  }
 }
