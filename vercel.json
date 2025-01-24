@@ -1,6 +1,9 @@
 {
-  "routes": [
-    { "src": "/(.*)", "dest": "/index.html" }
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ],
   "headers": [
     {
@@ -8,6 +11,15 @@
       "headers": [
         { "key": "X-Frame-Options", "value": "ALLOW-FROM https://web.telegram.org" },
         { "key": "Content-Security-Policy", "value": "frame-ancestors 'self' https://web.telegram.org" }
+      ]
+    },
+    {
+      "source": "/tonconnect-manifest.json",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
       ]
     }
   ]
