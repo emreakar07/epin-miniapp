@@ -1,35 +1,43 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import WebApp from '@twa-dev/sdk';
 
-interface Props {
-  children: ReactNode;
-}
-
-interface State {
+interface ErrorState {
   hasError: boolean;
+  errorInfo?: string;
 }
 
-class ErrorBoundary extends Component<Props, State> {
-  public state: State = {
-    hasError: false
-  };
+class ErrorBoundary extends Component<{children: ReactNode}, ErrorState> {
+  state: ErrorState = { hasError: false };
 
-  public static getDerivedStateFromError(): State {
+  static getDerivedStateFromError(): ErrorState {
     return { hasError: true };
   }
 
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Uncaught error:', error, errorInfo);
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('Error Stack:', error.stack);
+    console.error('Component Stack:', errorInfo.componentStack);
+    this.setState({ errorInfo: errorInfo.componentStack });
+    WebApp.showAlert(`Kritik Hata: ${error.message}`);
   }
 
-  public render() {
+  render() {
     if (this.state.hasError) {
       return (
-        <div className="error-container">
-          <h3>Bir hata oluştu</h3>
-          <button onClick={() => window.location.reload()}>
-            Yenile
+        <div className="error-fallback">
+          <h3>⚠️ Sistem Hatası ⚠️</h3>
+          <p>Lütfen uygulamayı yeniden yükleyin</p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="reload-button"
+          >
+            Yeniden Yükle
           </button>
+          {this.state.errorInfo && (
+            <details className="error-details">
+              <summary>Teknik Detaylar</summary>
+              <pre>{this.state.errorInfo}</pre>
+            </details>
+          )}
         </div>
       );
     }
@@ -38,4 +46,4 @@ class ErrorBoundary extends Component<Props, State> {
   }
 }
 
-export default ErrorBoundary; 
+export default ErrorBoundary;
