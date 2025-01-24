@@ -13,9 +13,7 @@ module.exports = {
     configure: {
       resolve: {
         fallback: {
-          buffer: require.resolve('buffer/'),
-          stream: false,
-          crypto: false
+          buffer: require.resolve('buffer/')
         }
       }
     },
