@@ -4,13 +4,11 @@ import WebApp from '@twa-dev/sdk';
 import PaymentForm from './components/PaymentForm';
 import './styles/App.css';
 
-// Manifest URL'ini düzeltelim
 const manifestUrl = 'https://epin-miniapp.vercel.app/tonconnect-manifest.json' as `https://${string}`;
 
 const App = () => {
   useEffect(() => {
-    WebApp.ready();
-    WebApp.setHeaderColor(WebApp.themeParams.bg_color || '#ffffff');
+    WebApp.expand(); // Uygulamayı tam ekran yap
   }, []);
 
   return (

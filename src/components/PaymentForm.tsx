@@ -83,11 +83,26 @@ const PaymentForm = () => {
       const result = await tonConnectUI.sendTransaction(tx);
       
       if (result.boc) {
-        WebApp.showAlert('✅ Ödeme Başarılı!', WebApp.close);
+        WebApp.showPopup({
+          title: 'Başarılı',
+          message: 'Ödeme başarıyla tamamlandı!',
+          buttons: [{
+            id: "close",
+            type: "close"
+          }]
+        });
+        setTimeout(() => WebApp.close(), 2000);
       }
     } catch (error) {
       const message = handleTransactionError(error);
-      WebApp.showAlert(`❌ Hata: ${message}`);
+      WebApp.showPopup({
+        title: 'Hata',
+        message: message,
+        buttons: [{
+          id: "ok",
+          type: "close"
+        }]
+      });
     } finally {
       setIsLoading(false);
     }
