@@ -69,12 +69,11 @@ const PaymentForm = () => {
         messages: [{
           address: recipientAddress,
           amount: nanoAmount.toString(),
-          payload: beginCell()
-            .storeUint(0, 32)
-            .storeStringTail(JSON.stringify({ orderId, userId }))
-            .endCell()
-            .toBoc()
-            .toString('base64url')
+          payload: Buffer.from(JSON.stringify({
+            orderId: orderId,
+            userId: userId,
+            timestamp: Date.now()
+          })).toString('base64')
         }]
       };
 
