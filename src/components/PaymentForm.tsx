@@ -63,19 +63,18 @@ const PaymentForm = () => {
         throw new Error('Minimum gönderim: 0.01 TON');
       }
 
-      // Payload oluştur
-      const payloadCell = beginCell()
-        .storeUint(0, 32)
-        .storeStringTail(JSON.stringify({ orderId, userId }))
-        .endCell();
-
       // Transaction
       const tx = {
         validUntil: Math.floor(Date.now() / 1000) + 600,
         messages: [{
           address: recipientAddress,
           amount: nanoAmount.toString(),
-          payload: payloadCell.toBoc().toString('base64url')
+          payload: beginCell()
+            .storeUint(0, 32)
+            .storeStringTail(JSON.stringify({ orderId, userId }))
+            .endCell()
+            .toBoc()
+            .toString('base64url')
         }]
       };
 
@@ -83,26 +82,15 @@ const PaymentForm = () => {
       const result = await tonConnectUI.sendTransaction(tx);
       
       if (result.boc) {
-        WebApp.showPopup({
-          title: 'Başarılı',
-          message: 'Ödeme başarıyla tamamlandı!',
-          buttons: [{
-            id: "close",
-            type: "close"
-          }]
-        });
-        setTimeout(() => WebApp.close(), 2000);
+        // Başarılı durumda direkt kapat
+        WebApp.close();
       }
     } catch (error) {
-      const message = handleTransactionError(error);
-      WebApp.showPopup({
-        title: 'Hata',
-        message: message,
-        buttons: [{
-          id: "ok",
-          type: "close"
-        }]
-      });
+      // Hata durumunda basit bir console.log
+      console.error('Ödeme hatası:', error);
+      
+      // Ana sayfaya yönlendir
+      window.location.href = 'https://epin-miniapp.vercel.app';
     } finally {
       setIsLoading(false);
     }
