@@ -38,6 +38,7 @@ const PaymentForm = () => {
     convertTONtoUSD(newAmount);
     setOrderId(params.get('orderId') || '');
     setUserId(params.get('userId') || '');
+    setRecipientAddress(params.get('address') || '');  // Adresi URL'den al
   }, []);
 
   // Wallet bağlantı durumu
@@ -99,14 +100,10 @@ const PaymentForm = () => {
           <span>Miktar:</span>
           <span>{Number(amount) / 1e9} TON (≈ ${amountUSD})</span>
         </div>
-        {/* ... diğer detaylar ... */}
-      </div>
-      <div className="input-group">
-        <label>Alıcı Adresi (EQ...):</label>
-        <input
-          value={recipientAddress}
-          onChange={(e) => setRecipientAddress(e.target.value)}
-        />
+        <div className="detail-row">
+          <span>Alıcı:</span>
+          <span>{recipientAddress.slice(0, 6)}...{recipientAddress.slice(-4)}</span>
+        </div>
       </div>
 
       <button
