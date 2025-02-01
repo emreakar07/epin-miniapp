@@ -82,15 +82,16 @@ const PaymentForm = () => {
       const result = await tonConnectUI.sendTransaction(tx);
       
       if (result.boc) {
-        // Başarılı durumda direkt kapat
         WebApp.close();
       }
     } catch (error) {
-      // Hata durumunda basit bir console.log
       console.error('Ödeme hatası:', error);
-      
-      // Ana sayfaya yönlendir
-      window.location.href = 'https://epin-miniapp.vercel.app';
+      // Yönlendirme kaldırıldı, bunun yerine:
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert('İşlem sırasında bir hata oluştu');
+      }
     } finally {
       setIsLoading(false);
     }
