@@ -8,7 +8,7 @@ const manifestUrl = 'https://epin-miniapp.vercel.app/tonconnect-manifest.json' a
 
 const App = () => {
   useEffect(() => {
-    WebApp.expand(); // Uygulamayı tam ekran yap
+    WebApp.expand();
   }, []);
 
   return (

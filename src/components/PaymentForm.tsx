@@ -57,14 +57,13 @@ const PaymentForm = () => {
         throw new Error('Geçersiz alıcı adresi');
       }
 
-      // Amount'u nanoTON'a çevir
       const nanoAmount = toNano(amount).toString();
 
       const tx = {
         validUntil: Math.floor(Date.now() / 1000) + 600,
         messages: [{
           address: recipientAddress,
-          amount: nanoAmount,  // nanoTON cinsinden
+          amount: nanoAmount,
           payload: Buffer.from(JSON.stringify({
             orderId: orderId,
             userId: userId,
@@ -76,7 +75,12 @@ const PaymentForm = () => {
       const result = await tonConnectUI.sendTransaction(tx);
       
       if (result.boc) {
-        WebApp.close();
+        // Transaction hash'i kontrol et
+        const txHash = result.boc;
+        console.log('Transaction hash:', txHash);
+        
+        // Başarılı ise kapat
+        setTimeout(() => WebApp.close(), 1000);
       }
     } catch (error) {
       console.error('Ödeme hatası:', error);

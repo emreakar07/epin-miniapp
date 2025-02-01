@@ -6,5 +6,7 @@
     "privacyPolicyUrl": "https://epin-miniapp.vercel.app/privacy.html",
     "version": "0.1.0",
     "permissions": ["ton_addr", "ton_payments"],
-    "platforms": ["web", "ios", "android"]
-  }
+    "platforms": ["web", "ios", "android"],
+    "universalUrl": "https://epin-miniapp.vercel.app",
+    "manifestVersion": 2
+}
