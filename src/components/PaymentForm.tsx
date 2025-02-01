@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useTonConnectUI } from '@tonconnect/ui-react';
 import { beginCell, toNano } from '@ton/core';
 import WebApp from '@twa-dev/sdk';
-import { handleTransactionError } from '@utils/errors';
-import { CryptoUtils } from '@utils/cryptoUtils';
-import { Validation } from '@utils/validation';
+import { handleTransactionError } from '../utilities/errors';
+import { CryptoUtils } from '../utilities/cryptoUtils';
+import { Validation } from '../utilities/validation';
 
 const PaymentForm = () => {
   const [tonConnectUI] = useTonConnectUI();
