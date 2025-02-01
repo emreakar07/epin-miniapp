@@ -1,1 +1,26 @@
- 
+.instant-payment {
+  padding: 16px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.payment-header {
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.payment-amount {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+.payment-button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 16px;
+} 

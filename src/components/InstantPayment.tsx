@@ -2,7 +2,6 @@ import React from 'react';
 import { useTonConnectUI } from '@tonconnect/ui-react';
 import { toNano } from '@ton/core';
 import WebApp from '@twa-dev/sdk';
-import './styles/InstantPayment.css';
 
 interface InstantPaymentProps {
   amountUSD: number;
@@ -33,7 +32,7 @@ const InstantPayment = ({ amountUSD, merchantAddress }: InstantPaymentProps) => 
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Bilinmeyen hata';
         WebApp.showAlert(`❌ Hata: ${errorMessage}`);
-      }
+    }
   };
 
   // Gerçek zamanlı kur çevrimi

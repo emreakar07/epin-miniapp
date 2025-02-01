@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import { TonConnectUIProvider, THEME } from '@tonconnect/ui-react';
 import WebApp from '@twa-dev/sdk';
-import InstantPayment from './components/InstantPayment';
+import PaymentForm from './components/PaymentForm';
 import './styles/App.css';
 
-const manifestUrl = 'https://yourdomain.com/tonconnect-manifest.json';
+// Manifest URL'ini düzeltelim
+const manifestUrl = 'https://epin-miniapp.vercel.app/tonconnect-manifest.json' as `https://${string}`;
 
 const App = () => {
   useEffect(() => {
@@ -15,19 +16,19 @@ const App = () => {
   return (
     <TonConnectUIProvider
       manifestUrl={manifestUrl}
+      restoreConnection
+      actionsConfiguration={{
+        twaReturnUrl: 'https://epin-miniapp.vercel.app',
+        skipRedirectToWallet: "always",
+        returnStrategy: "back"
+      }}
       uiPreferences={{
         theme: WebApp.colorScheme === 'dark' ? THEME.DARK : THEME.LIGHT
       }}
-      actionsConfiguration={{
-        returnStrategy: 'back',
-        twaReturnUrl: 'https://yourdomain.com'
-      }}
     >
       <div className="app-container">
-        <InstantPayment 
-          amountUSD={3.5}
-          merchantAddress="EQABC...XYZ"
-        />
+        <h1>EPIN TON Ödeme Ağ Geçidi</h1>
+        <PaymentForm />
       </div>
     </TonConnectUIProvider>
   );

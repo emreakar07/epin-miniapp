@@ -9,16 +9,33 @@ import { Validation } from '@utils/validation';
 const PaymentForm = () => {
   const [tonConnectUI] = useTonConnectUI();
   const [amount, setAmount] = useState('0');
+  const [amountUSD, setAmountUSD] = useState<string>('0');
   const [orderId, setOrderId] = useState('');
   const [userId, setUserId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [recipientAddress, setRecipientAddress] = useState('');
 
+  // TON -> USD dönüşümü
+  const convertTONtoUSD = async (tonAmount: string) => {
+    try {
+      const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=the-open-network&vs_currencies=usd');
+      const data = await response.json();
+      const tonPrice = data['the-open-network'].usd;
+      const nanoTonAmount = Number(tonAmount) / 1e9; // nanoTON -> TON
+      const usdAmount = (nanoTonAmount * tonPrice).toFixed(2);
+      setAmountUSD(usdAmount);
+    } catch (error) {
+      console.error('Fiyat dönüşüm hatası:', error);
+    }
+  };
+
   // URL'den parametreleri oku
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    setAmount(params.get('amount') || '0');
+    const newAmount = params.get('amount') || '0';
+    setAmount(newAmount);
+    convertTONtoUSD(newAmount);
     setOrderId(params.get('orderId') || '');
     setUserId(params.get('userId') || '');
   }, []);
@@ -77,6 +94,13 @@ const PaymentForm = () => {
 
   return (
     <div className="payment-container">
+      <div className="payment-details">
+        <div className="detail-row">
+          <span>Miktar:</span>
+          <span>{Number(amount) / 1e9} TON (≈ ${amountUSD})</span>
+        </div>
+        {/* ... diğer detaylar ... */}
+      </div>
       <div className="input-group">
         <label>Alıcı Adresi (EQ...):</label>
         <input
