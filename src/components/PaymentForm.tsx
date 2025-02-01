@@ -34,11 +34,11 @@ const PaymentForm = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const newAmount = params.get('amount') || '0';
-    setAmount(newAmount);
+    setAmount(newAmount);  // TON cinsinden
     convertTONtoUSD(newAmount);
     setOrderId(params.get('orderId') || '');
     setUserId(params.get('userId') || '');
-    setRecipientAddress(params.get('address') || '');  // Adresi URL'den al
+    setRecipientAddress(params.get('address') || '');
   }, []);
 
   // Wallet bağlantı durumu
@@ -53,22 +53,18 @@ const PaymentForm = () => {
   const handlePayment = async () => {
     setIsLoading(true);
     try {
-      // Validasyonlar
       if (!Validation.validateAddress(recipientAddress).isValid) {
         throw new Error('Geçersiz alıcı adresi');
       }
-      
-      const nanoAmount = CryptoUtils.toSafeNano(amount);
-      if (nanoAmount <= 0n) {
-        throw new Error('Minimum gönderim: 0.01 TON');
-      }
 
-      // Transaction
+      // Amount'u nanoTON'a çevir
+      const nanoAmount = toNano(amount).toString();
+
       const tx = {
         validUntil: Math.floor(Date.now() / 1000) + 600,
         messages: [{
           address: recipientAddress,
-          amount: nanoAmount.toString(),
+          amount: nanoAmount,  // nanoTON cinsinden
           payload: Buffer.from(JSON.stringify({
             orderId: orderId,
             userId: userId,
@@ -77,7 +73,6 @@ const PaymentForm = () => {
         }]
       };
 
-      // İşlemi gönder
       const result = await tonConnectUI.sendTransaction(tx);
       
       if (result.boc) {
@@ -85,7 +80,6 @@ const PaymentForm = () => {
       }
     } catch (error) {
       console.error('Ödeme hatası:', error);
-      // Yönlendirme kaldırıldı, bunun yerine:
       if (error instanceof Error) {
         alert(error.message);
       } else {
@@ -101,7 +95,7 @@ const PaymentForm = () => {
       <div className="payment-details">
         <div className="detail-row">
           <span>Miktar:</span>
-          <span>{Number(amount) / 1e9} TON (≈ ${amountUSD})</span>
+          <span>{amount} TON (≈ ${amountUSD})</span>  {/* Direkt TON göster */}
         </div>
         <div className="detail-row">
           <span>Alıcı:</span>
